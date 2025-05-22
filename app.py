@@ -3,9 +3,11 @@ import pandas as pd
 import os
 import re
 from datetime import datetime
+from openpyxl import load_workbook
 
 st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
 st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
+
 def validar_correo(correo):
     return re.match(r"[^@]+@[^@]+\.[^@]+", correo)
 
@@ -106,7 +108,7 @@ else:
     distritos = []
 distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrito")
 
-archivo = "respuestas.csv"
+archivo = "respuestas.xlsx"
 
 col1, col2 = st.columns(2)
 
@@ -154,11 +156,17 @@ with col1:
                 'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
             })
 
-            # Guardar respuesta sin leer todo el CSV (append mode)
+            # Guardar respuesta en archivo .xlsx
             if not os.path.exists(archivo):
-                nueva_respuesta.to_csv(archivo, index=False)
+                with pd.ExcelWriter(archivo, engine='openpyxl') as writer:
+                    nueva_respuesta.to_excel(writer, index=False, sheet_name='Respuestas')
             else:
-                nueva_respuesta.to_csv(archivo, mode='a', header=False, index=False)
+                with pd.ExcelWriter(archivo, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+                    book = load_workbook(archivo)
+                    writer.book = book
+                    writer.sheets = {ws.title: ws for ws in book.worksheets}
+                    reader = pd.read_excel(archivo)
+                    nueva_respuesta.to_excel(writer, index=False, header=False, startrow=len(reader)+1, sheet_name='Respuestas')
 
             st.success("✅ ¡Gracias por enviar tu respuesta!")
 
@@ -171,7 +179,7 @@ if st.checkbox("Mostrar respuestas"):
 
     if user == usuario_correcto and password == contraseña_correcta:
         if os.path.exists(archivo):
-            st.write(pd.read_csv(archivo))
+            st.write(pd.read_excel(archivo))
         else:
             st.write("Aún no hay respuestas.")
     else:
