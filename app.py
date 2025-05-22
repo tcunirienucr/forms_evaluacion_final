@@ -70,18 +70,17 @@ clase_menos_gusto = st.text_area("¿Cuál de las clases te gustó menos? Porfa c
 recomendaciones = st.text_area("¿Qué recomendaciones nos harías para el futuro? *", key="recomendaciones")
 experiencia = st.text_area("¿Podrías escribir unas pocas líneas comentándonos tu experiencia y resumiéndonos cuál ha sido tu apreciación general del curso? *", key="experiencia")
 calificacion = st.slider(
-    "En general, ¿qué calificación le das al curso? *",
+    "En general, ¿qué calificación le das al curso? Donde 1 es la peor nota y 10 es la mejor nota o excelente",
     1, 10,
     step=1,
     format="%d",
     key="calificacion"
 )
 interes_cursos = st.multiselect(
-    "Interés por otros cursos que impartimos y que no hayas llevado *",
+    "Interés por otros cursos que impartimos y que no hayas llevado (puedes llenar todas las que gustes).",
     options=[
-        "Economía para la Vida",
+        "Economía para la Vida para menores de 20 años",
         "Redacción Consciente",
-        "Excel Intermedio",
         "Economía para entender el Mercado y la Sociedad",
         "Indicadores Macroeconómicos",
         "Ninguno"
