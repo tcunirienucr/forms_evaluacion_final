@@ -4,8 +4,8 @@ import os
 import re
 from datetime import datetime
 
-st.title("📋 Formulario de Registro")
-
+st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
+st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
 def validar_correo(correo):
     return re.match(r"[^@]+@[^@]+\.[^@]+", correo)
 
