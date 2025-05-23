@@ -168,6 +168,12 @@ with col1:
 
             st.success("✅ ¡Gracias por enviar tu respuesta!")
 
+            # Limpiar campos del formulario
+            for key in campos.keys():
+                st.session_state[key] = campos[key]
+
+            st.rerun()  # Refrescar la pantalla
+
 if st.checkbox("Mostrar respuestas"):
     user = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
