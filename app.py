@@ -3,7 +3,6 @@ import pandas as pd
 import os
 import re
 from datetime import datetime
-from openpyxl import load_workbook
 
 st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
 st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
@@ -21,27 +20,40 @@ def cargar_ubicaciones(ruta):
 
 archivo_ubicaciones = "división_territorial_CR.xlsx"
 if not os.path.exists(archivo_ubicaciones):
-    st.error("Archivo de ubicaciones no encontrado. Por favor, sube el archivo 'ubicaciones.xlsx' con las columnas Provincia, Cantón y Distrito.")
+    st.error("Archivo de ubicaciones no encontrado. Por favor, sube el archivo 'división_territorial_CR.xlsx' con las columnas Provincia, Cantón y Distrito.")
     st.stop()
 
 df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
 # Inicializar session_state para inputs si no existen
-campos = {
-    "nombre": "", "edad": 0, "correo": "", "comentario": "",
-    "provincia": "", "canton": "", "distrito": "", "grupo": "", "asististe": "Seleccione...", "motivo_ausencia": [],
-    "clase_favorita": "", "clase_menos_gusto": "", "recomendaciones": "", "experiencia": "",
-    "calificacion": 5, "interes_cursos": [], "otro_curso": ""
-}
-for key, default in campos.items():
-    if key not in st.session_state:
-        st.session_state[key] = default
-        
-if "form_enviado" not in st.session_state:
-    st.session_state["form_enviado"] = False
+def init_state():
+    defaults = {
+        "nombre": "", 
+        "edad": 0, 
+        "correo": "", 
+        "provincia": "", 
+        "canton": "", 
+        "distrito": "", 
+        "grupo": "", 
+        "asististe": "Seleccione...", 
+        "motivo_ausencia": [], 
+        "clase_favorita": "", 
+        "clase_menos_gusto": "", 
+        "recomendaciones": "", 
+        "experiencia": "", 
+        "calificacion": 5, 
+        "interes_cursos": [], 
+        "otro_curso": "",
+        "form_enviado": False
+    }
+    for key, val in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = val
 
-# ✅ Verificación temprana de envío
-if st.session_state["form_enviado"]:
+init_state()
+
+# Si ya se envió, mostrar mensaje y parar
+if st.session_state.form_enviado:
     st.success("✅ ¡Gracias por enviar tu respuesta!")
     st.write("Podés cerrar esta ventana o volver más tarde si querés enviar otro formulario.")
     st.stop()
@@ -118,68 +130,81 @@ distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrit
 
 archivo = "respuestas.xlsx"
 
-col1, col2 = st.columns(2)
+if st.button("Enviar"):
+    # Validaciones
+    if not nombre.strip():
+        st.error("Por favor ingresa tu nombre completo.")
+    elif not validar_correo(correo):
+        st.error("Por favor ingresa un correo válido.")
+    elif not provincia or not canton or not distrito:
+        st.error("Por favor selecciona provincia, cantón y distrito.")
+    elif not grupo:
+        st.error("Por favor selecciona el grupo.")
+    elif asististe == "Seleccione...":
+        st.error("Por favor indica si asististe a las cuatro clases.")
+    elif not motivo_ausencia:
+        st.error("Por favor selecciona el motivo de ausencia.")
+    elif not clase_favorita.strip():
+        st.error("Por favor escribe cuál fue tu clase favorita.")
+    elif not clase_menos_gusto.strip():
+        st.error("Por favor escribe cuál fue la clase que menos te gustó.")
+    elif not recomendaciones.strip():
+        st.error("Por favor escribe tus recomendaciones.")
+    elif not experiencia.strip():
+        st.error("Por favor escribe tu experiencia general del curso.")
+    else:
+        nueva_respuesta = pd.DataFrame({
+            'Nombre': [nombre],
+            'Edad': [edad],
+            'Correo': [correo],
+            'Grupo': [grupo],
+            'Asistió a todas las clases': [asististe],
+            'Motivo de ausencia': [", ".join(motivo_ausencia)],
+            'Clase favorita': [clase_favorita],
+            'Clase que menos gustó': [clase_menos_gusto],
+            'Recomendaciones': [recomendaciones],
+            'Experiencia general': [experiencia],
+            'Calificación curso': [calificacion],
+            'Interés en otros cursos': [", ".join(interes_cursos) if interes_cursos else ""],
+            'Otro curso deseado': [otro_curso],
+            'Provincia': [provincia],
+            'Cantón': [canton],
+            'Distrito': [distrito],
+            'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
+        })
 
-with col1:
-    if st.button("Enviar"):
-        # Validaciones
-        if not nombre.strip():
-            st.error("Por favor ingresa tu nombre completo.")
-        elif not validar_correo(correo):
-            st.error("Por favor ingresa un correo válido.")
-        elif not provincia or not canton or not distrito:
-            st.error("Por favor selecciona provincia, cantón y distrito.")
-        elif not grupo:
-            st.error("Por favor selecciona el grupo.")
-        elif asististe == "Seleccione...":
-            st.error("Por favor indica si asististe a las cuatro clases.")
-        elif not motivo_ausencia:
-            st.error("Por favor selecciona el motivo de ausencia.")
-        elif not clase_favorita.strip():
-            st.error("Por favor escribe cuál fue tu clase favorita.")
-        elif not clase_menos_gusto.strip():
-            st.error("Por favor escribe cuál fue la clase que menos te gustó.")
-        elif not recomendaciones.strip():
-            st.error("Por favor escribe tus recomendaciones.")
-        elif not experiencia.strip():
-            st.error("Por favor escribe tu experiencia general del curso.")
+        # Guardar respuesta en archivo .xlsx
+        if not os.path.exists(archivo):
+            with pd.ExcelWriter(archivo, engine='openpyxl') as writer:
+                nueva_respuesta.to_excel(writer, index=False, sheet_name='Respuestas')
         else:
-            nueva_respuesta = pd.DataFrame({
-                'Nombre': [nombre],
-                'Edad': [edad],
-                'Correo': [correo],
-                'Grupo': [grupo],
-                'Asistió a todas las clases': [asististe],
-                'Motivo de ausencia': [", ".join(motivo_ausencia)],
-                'Clase favorita': [clase_favorita],
-                'Clase que menos gustó': [clase_menos_gusto],
-                'Recomendaciones': [recomendaciones],
-                'Experiencia general': [experiencia],
-                'Calificación curso': [calificacion],
-                'Interés en otros cursos': [", ".join(interes_cursos) if interes_cursos else ""],
-                'Otro curso deseado': [otro_curso],
-                'Provincia': [provincia],
-                'Cantón': [canton],
-                'Distrito': [distrito],
-                'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
-            })
+            # Leer para saber dónde insertar (startrow)
+            existing_df = pd.read_excel(archivo)
+            with pd.ExcelWriter(archivo, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+                nueva_respuesta.to_excel(writer, index=False, header=False, startrow=len(existing_df)+1, sheet_name='Respuestas')
 
-            # Guardar respuesta en archivo .xlsx
-            if not os.path.exists(archivo):
-                with pd.ExcelWriter(archivo, engine='openpyxl') as writer:
-                    nueva_respuesta.to_excel(writer, index=False, sheet_name='Respuestas')
-            else:
-                existing_df = pd.read_excel(archivo)
-                with pd.ExcelWriter(archivo, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
-                    nueva_respuesta.to_excel(writer, index=False, header=False, startrow=len(existing_df) + 1, sheet_name='Respuestas')
+        # Marcar formulario como enviado
+        st.session_state.form_enviado = True
 
-            st.session_state["form_enviado"] = True
+        # Limpiar campos: para listas, reiniciamos con lista nueva, no con la misma referencia
+        st.session_state.nombre = ""
+        st.session_state.edad = 0
+        st.session_state.correo = ""
+        st.session_state.provincia = ""
+        st.session_state.canton = ""
+        st.session_state.distrito = ""
+        st.session_state.grupo = ""
+        st.session_state.asististe = "Seleccione..."
+        st.session_state.motivo_ausencia = []
+        st.session_state.clase_favorita = ""
+        st.session_state.clase_menos_gusto = ""
+        st.session_state.recomendaciones = ""
+        st.session_state.experiencia = ""
+        st.session_state.calificacion = 5
+        st.session_state.interes_cursos = []
+        st.session_state.otro_curso = ""
 
-            # Limpiar campos del formulario
-            for key in campos.keys():
-                st.session_state[key] = campos[key]
-
-            st.experimental_rerun()
+        st.experimental_rerun()
 
 if st.checkbox("Mostrar respuestas"):
     user = st.text_input("Usuario")
