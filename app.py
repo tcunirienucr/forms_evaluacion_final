@@ -36,8 +36,17 @@ campos = {
 for key, default in campos.items():
     if key not in st.session_state:
         st.session_state[key] = default
+        
+if "form_enviado" not in st.session_state:
+    st.session_state["form_enviado"] = False
 
-# Campos del formulario (igual)
+# ✅ Verificación temprana de envío
+if st.session_state["form_enviado"]:
+    st.success("✅ ¡Gracias por enviar tu respuesta!")
+    st.write("Podés cerrar esta ventana o volver más tarde si querés enviar otro formulario.")
+    st.stop()
+
+# Campos del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
 edad = st.number_input("Edad", 0, 120, key="edad")
 correo = st.text_input("Correo electrónico", key="correo")
@@ -161,18 +170,16 @@ with col1:
                     nueva_respuesta.to_excel(writer, index=False, sheet_name='Respuestas')
             else:
                 existing_df = pd.read_excel(archivo)
-
                 with pd.ExcelWriter(archivo, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
                     nueva_respuesta.to_excel(writer, index=False, header=False, startrow=len(existing_df) + 1, sheet_name='Respuestas')
 
-
-            st.success("✅ ¡Gracias por enviar tu respuesta!")
+            st.session_state["form_enviado"] = True
 
             # Limpiar campos del formulario
             for key in campos.keys():
                 st.session_state[key] = campos[key]
 
-            st.rerun()  # Refrescar la pantalla
+            st.experimental_rerun()
 
 if st.checkbox("Mostrar respuestas"):
     user = st.text_input("Usuario")
