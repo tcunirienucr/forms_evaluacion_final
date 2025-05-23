@@ -160,12 +160,11 @@ with col1:
                 with pd.ExcelWriter(archivo, engine='openpyxl') as writer:
                     nueva_respuesta.to_excel(writer, index=False, sheet_name='Respuestas')
             else:
+                existing_df = pd.read_excel(archivo)
+
                 with pd.ExcelWriter(archivo, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
-                    book = load_workbook(archivo)
-                    writer.book = book
-                    writer.sheets = {ws.title: ws for ws in book.worksheets}
-                    reader = pd.read_excel(archivo)
-                    nueva_respuesta.to_excel(writer, index=False, header=False, startrow=len(reader)+1, sheet_name='Respuestas')
+                    nueva_respuesta.to_excel(writer, index=False, header=False, startrow=len(existing_df) + 1, sheet_name='Respuestas')
+
 
             st.success("✅ ¡Gracias por enviar tu respuesta!")
 
