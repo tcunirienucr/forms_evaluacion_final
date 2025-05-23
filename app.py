@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import re
 from datetime import datetime
+from openpyxl import load_workbook
 
 st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
 st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
@@ -35,17 +36,8 @@ campos = {
 for key, default in campos.items():
     if key not in st.session_state:
         st.session_state[key] = default
-        
-if "form_enviado" not in st.session_state:
-    st.session_state["form_enviado"] = False
 
-# ✅ Verificación temprana de envío
-if st.session_state["form_enviado"]:
-    st.success("✅ ¡Gracias por enviar tu respuesta!")
-    st.write("Podés cerrar esta ventana o volver más tarde si querés enviar otro formulario.")
-    st.stop()
-
-# Campos del formulario
+# Campos del formulario (igual)
 nombre = st.text_input("Nombre completo", key="nombre")
 edad = st.number_input("Edad", 0, 120, key="edad")
 correo = st.text_input("Correo electrónico", key="correo")
@@ -119,13 +111,6 @@ archivo = "respuestas.xlsx"
 
 col1, col2 = st.columns(2)
 
-def limpiar_formulario():
-    for key in campos.keys():
-        if key in st.session_state:
-            del st.session_state[key]
-    st.session_state["form_enviado"] = False
-    st.experimental_rerun()
-
 with col1:
     if st.button("Enviar"):
         # Validaciones
@@ -176,11 +161,12 @@ with col1:
                     nueva_respuesta.to_excel(writer, index=False, sheet_name='Respuestas')
             else:
                 existing_df = pd.read_excel(archivo)
+
                 with pd.ExcelWriter(archivo, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
                     nueva_respuesta.to_excel(writer, index=False, header=False, startrow=len(existing_df) + 1, sheet_name='Respuestas')
 
-            st.session_state["form_enviado"] = True
-            limpiar_formulario()
+
+            st.success("✅ ¡Gracias por enviar tu respuesta! La respuesta ha sido salvada correctamente.")
 
 if st.checkbox("Mostrar respuestas"):
     user = st.text_input("Usuario")
