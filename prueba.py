@@ -148,9 +148,9 @@ if st.button("Enviar formulario"):
             )
             conn = st.connection("gsheets", type=GSheetsConnection) 
             evaluacion_final=conn.update(worksheet="prueba2", data=evaluacion_final,)
+            st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
             st.cache_data.clear()
             st.rerun()
-            st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
 
 
     
