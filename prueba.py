@@ -142,22 +142,23 @@ with st.form(key="evaluacionfinal"):
                 evaluacion_final = pd.DataFrame(
                     [
                         {
-                            "nombre" = nombre,
-                            "edad" = edad,
-                            "correo"=correo,
-                            "grupo" =grupo,
-                            "asistencia" = asististe,
-                            "motivo_ausencia" = motivo_ausencia,
-                            "clase_favorita"= clase_favorita,
-                            "clase_menos_favorita"=clase_menos_gusto,
-                            "recomendaciones"=recomendaciones,
-                            "experiencia"=experiencia,
-                            "calificacion"=calificacion, 
-                            "interes_cursos"= interes_cursos,
-                            "interes_otros_cursos"=otro_curso,
-                            "provincia"=provincia,
-                            "canton"=canton,
-                            "distrito"=distrito,
+                            "nombre": nombre,
+                            "edad":edad,
+                            "correo":correo,
+                            "grupo":grupo,
+                            "asistencia": asististe,
+                            "motivo_ausencia": motivo_ausencia,
+                            "clase_favorita":clase_favorita,
+                            "clase_menos_favorita":clase_menos_gusto,
+                            "recomendaciones":recomendaciones,
+                            "experiencia":experiencia,
+                            "calificacion":calificacion, 
+                            "interes_cursos": interes_cursos,
+                            "interes_otros_cursos":otro_curso,
+                            "provincia":provincia,
+                            "canton":canton,
+                            "distrito":distrito,
+                            'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
                         }
                     ]
                 )
