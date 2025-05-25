@@ -111,23 +111,23 @@ with st.form(key="evaluacionfinal"):
     if st.button("Enviar"):
 # Validaciones
         if not nombre.strip():
-        st.warning("Por favor ingresa tu nombre completo.")
+            st.warning("Por favor ingresa tu nombre completo.")
         elif not validar_correo(correo):
-        st.warning("Por favor ingresa un correo válido.")
+            st.warning("Por favor ingresa un correo válido.")
         elif not provincia or not canton or not distrito:
-        st.warning("Por favor selecciona provincia, cantón y distrito.")
+            st.warning("Por favor selecciona provincia, cantón y distrito.")
         elif not grupo:
-        st.warning("Por favor selecciona el grupo.")
+            st.warning("Por favor selecciona el grupo.")
         elif asististe == "Seleccione...":
-        st.warning("Por favor indica si asististe a las cuatro clases.")
+            st.warning("Por favor indica si asististe a las cuatro clases.")
         elif not motivo_ausencia:
-        st.warning("Por favor selecciona el motivo de ausencia.")
+            st.warning("Por favor selecciona el motivo de ausencia.")
         elif not clase_favorita.strip():
-        st.warning("Por favor escribe cuál fue tu clase favorita.")
+            st.warning("Por favor escribe cuál fue tu clase favorita.")
         elif not clase_menos_gusto.strip():
-        st.warning("Por favor escribe cuál fue la clase que menos te gustó.")
+            st.warning("Por favor escribe cuál fue la clase que menos te gustó.")
         elif not recomendaciones.strip():
-        st.warning("Por favor escribe tus recomendaciones.")
+            st.warning("Por favor escribe tus recomendaciones.")
         elif not experiencia.strip():
-        st.warning("Por favor escribe tu experiencia general del curso.")
+            st.warning("Por favor escribe tu experiencia general del curso.")
     
