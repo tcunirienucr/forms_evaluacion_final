@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import re
 from datetime import datetime
-from openpyxl import load_workbook
+from streamlit_gsheets import GSheetsConnection
 
 st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
 st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
