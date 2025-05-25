@@ -156,8 +156,10 @@ with st.form(key="evaluacionfinal"):
                         }
                     ]
                 )
-                updated_df=pd.concat([df, evaluacion_final], ignore_index=True)
-                conn.update(worksheet="prueba", data=updated_df)  # Actualizar hoja
+                conn = st.connection("gsheets", type=GSheetsConnection) 
+                evaluacion_final=conn.update(worksheet="pruebaa", data=evaluacion_final,)
+                st.cache_data.clear()
+                st.rerun()
                 st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
 
 
