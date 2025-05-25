@@ -142,6 +142,22 @@ with st.form(key="evaluacionfinal"):
                 evaluacion_final = pd.DataFrame(
                     [
                         {
+                                                        "nombre": nombre,
+                            "edad":st.session_state.edad,
+                            "correo":st.session_state.correo,
+                            "grupo":st.session_state.grupo,
+                            "asistencia": st.session_state.asististe,
+                            "motivo_ausencia": st.session_state.motivo_ausencia,
+                            "clase_favorita":st.session_state.clase_favorita,
+                            "clase_menos_favorita":st.session_state.clase_menos_gusto,
+                            "recomendaciones":st.session_state.recomendaciones,
+                            "experiencia":st.session_state.experiencia,
+                            "calificacion":st.session_state.calificacion, 
+                            "interes_cursos": st.session_state.interes_cursos,
+                            "interes_otros_cursos":st.session_state.otro_curso,
+                            "canton":st.session_state.canton,
+                            "distrito":st.session_state.distrito,
+                            'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
                             "provincia": st.session_state.provincia
                         }
                     ]
