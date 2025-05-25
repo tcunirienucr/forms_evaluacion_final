@@ -29,10 +29,6 @@ if not os.path.exists(archivo_ubicaciones):
 
 df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
-#Establecer la conexión con Google Sheets 
-conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="prueba", usecols=list(range(6)))  # Leer datos existentes
-
 #Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
 edad = st.number_input("Edad", 0, 120, key="edad")
@@ -157,7 +153,7 @@ with st.form(key="evaluacionfinal"):
                     ]
                 )
                 conn = st.connection("gsheets", type=GSheetsConnection) 
-                evaluacion_final=conn.update(worksheet="pruebaa", data=evaluacion_final,)
+                evaluacion_final=conn.update(worksheet="prueba2", data=evaluacion_final,)
                 st.cache_data.clear()
                 st.rerun()
                 st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
