@@ -27,7 +27,7 @@ if not os.path.exists(archivo_ubicaciones):
 df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
 #Establecer la conexión con Google Sheets 
-conn = st.experimental_connection("gsheets", type=GSheetsConnection)
+conn = st.connection("gsheets", type=GSheetsConnection)
 existing_data = conn.read(worksheet="excelintermedio", usecols=list(range(17)), ttl=5)
 existing_data = existing_data.dropna(how="all")
 
