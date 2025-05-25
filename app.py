@@ -28,9 +28,7 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
 #Establecer la conexión con Google Sheets 
 conn = st.connection("gsheets", type=GSheetsConnection)
-existing_data = conn.read(worksheet="excelintermedio", usecols=list(range(17)), ttl=5)
-existing_data = existing_data.dropna(how="all")
-
+df = conn.read(worksheet="excelintermedio")
 
 # Campos del formulario (igual)
 with st.form(key="evaluacionfinal"):
