@@ -138,4 +138,30 @@ with st.form(key="evaluacionfinal"):
             st.warning("Por favor escribe tus recomendaciones.")
         elif not experiencia.strip():
             st.warning("Por favor escribe tu experiencia general del curso.")
+        else:
+                evaluacion_final = pd.DataFrame(
+                    [
+                        {
+                            "nombre" = nombre,
+                            "edad" = edad,
+                            "correo"=correo,
+                            "grupo" =grupo,
+                            "asistencia" = asististe,
+                            "motivo_ausencia" = motivo_ausencia,
+                            "clase_favorita"= clase_favorita,
+                            "clase_menos_favorita"=clase_menos_gusto,
+                            "recomendaciones"=recomendaciones,
+                            "experiencia"=experiencia,
+                            "calificacion"=calificacion, 
+                            "interes_cursos"= interes_cursos,
+                            "interes_otros_cursos"=otro_curso,
+                            "provincia"=provincia,
+                            "canton"=canton,
+                            "distrito"=distrito,
+                        }
+                    ]
+                )
+                updated_df = pd.concat([df, evaluacion_final], ignore_index=True)
+                conn.update(worksheet="excelintermedio", data=updated_df)
+                st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias")
     
