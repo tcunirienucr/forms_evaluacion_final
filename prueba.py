@@ -30,8 +30,7 @@ if not os.path.exists(archivo_ubicaciones):
 df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
 #Establecer la conexión con Google Sheets 
-conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="excel_intermedio")
+
 
 #Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
@@ -156,6 +155,7 @@ with st.form(key="evaluacionfinal"):
                         }
                     ]
                 )
+                conn = st.connection("gsheets", type=GSheetsConnection)
                 df = conn.read(worksheet="excel_intermedio", usecols=list(range(6)))  # Leer datos existentes
                 updated_df=pd.concat([df, evaluacion_final], ignore_index=True)
                 conn.update(worksheet="excel_intermedio", data=evaluacion_final)  # Actualizar hoja
