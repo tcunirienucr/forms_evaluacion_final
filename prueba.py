@@ -39,9 +39,6 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 #Establecer la conexión con Google Sheets 
 conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(worksheet="excelintermedio")
-hola = st.text_input("Nombre completo", key="hola")
-# Campos del formulario (igual)
-with st.form(key="evaluacionfinal"):
     #Contenido del formulario
     nombre = st.text_input("Nombre completo", key="nombre")
     edad = st.number_input("Edad", 0, 120, key="edad")
@@ -111,6 +108,9 @@ with st.form(key="evaluacionfinal"):
     else:
         distritos = []
     distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrito")
+
+# Campos del formulario (igual)
+with st.form(key="evaluacionfinal"):
 
     #Botón para enviar
     submit_button = st.form_submit_button(label="Enviar mi evaluación final del curso")
