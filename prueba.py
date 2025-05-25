@@ -53,7 +53,7 @@ with st.form(key="evaluacionfinal"):
     )
     asististe = st.radio(
         "¿Asististe a las cuatro clases? *",
-        options=["Seleccione...", "Si", "No"],
+        options=["Si", "No"],
         key="asististe"
     )
     motivo_ausencia = st.multiselect(
