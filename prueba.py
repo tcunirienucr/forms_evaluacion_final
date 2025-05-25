@@ -116,7 +116,7 @@ with st.form(key="evaluacionfinal"):
     submit_button = st.form_submit_button(label="Enviar mi evaluación final del curso")
 
     #Revisar envío
-    if st.button("Enviar"):
+    if submit_bottom:
 # Validaciones
         if not nombre.strip():
             st.warning("Por favor ingresa tu nombre completo.")
