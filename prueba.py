@@ -29,6 +29,10 @@ if not os.path.exists(archivo_ubicaciones):
 
 df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
+#Leer Google Sheets
+conn = st.connection("gsheets", type=GSheetsConnection) 
+existing_data = conn.read(worksheet="prueba2")
+
 #Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
 edad = st.number_input("Edad", 0, 120, key="edad")
@@ -146,8 +150,6 @@ if st.button("Enviar formulario"):
                     }
                 ]
             )
-            conn = st.connection("gsheets", type=GSheetsConnection) 
-            existing_data = conn.read(worksheet="prueba2")
             agregar_df=pd.concat([existing_data, evaluacion_final], ignore_index=True)
             conn.update(worksheet="prueba2", data=agregar_df)
             st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
