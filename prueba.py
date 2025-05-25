@@ -156,7 +156,8 @@ with st.form(key="evaluacionfinal"):
                         }
                     ]
                 )
-                df = conn.read(worksheet="excel_intermedio")  # Leer datos existentes
+                df = conn.read(worksheet="excel_intermedio", usecols=list(range(6))  # Leer datos existentes
+                updated_df=pd.concat([df, evaluacion_final], ignore_index=True)
                 conn.update(worksheet="excel_intermedio", data=evaluacion_final)  # Actualizar hoja
                 st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
 
