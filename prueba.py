@@ -146,7 +146,7 @@ if st.button("Enviar formulario"):
                     }
                 ]
             )
-            conn = st.connection("gsheets", type=GSheetsConnection) 7
+            conn = st.connection("gsheets", type=GSheetsConnection) 
             existing_data = conn.read(worksheet="prueba2")
             agregar_df=pd.concat([existing_data, evaluacion_final], ignore_index=True)
             conn.update(worksheet="prueba2", data=agregar_df)
