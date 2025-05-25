@@ -157,7 +157,7 @@ with st.form(key="evaluacionfinal"):
                             "interes_otros_cursos":st.session_state.otro_curso,
                             "canton":st.session_state.canton,
                             "distrito":st.session_state.distrito,
-                            'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
+                            'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
                             "provincia": st.session_state.provincia
                         }
                     ]
