@@ -2,12 +2,6 @@
 
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
-
-# Create a connection object.
-conn = st.connection("gsheets", type=GSheetsConnection)
-
-df = conn.read()
-
 import streamlit as st
 import pandas as pd
 import os
@@ -39,7 +33,8 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 #Establecer la conexión con Google Sheets 
 conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(worksheet="excel_intermedio")
-    #Contenido del formulario
+
+#Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
 edad = st.number_input("Edad", 0, 120, key="edad")
 correo = st.text_input("Correo electrónico", key="correo")
