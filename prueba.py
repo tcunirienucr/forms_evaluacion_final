@@ -40,6 +40,25 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(worksheet="excelintermedio")
 
+# Selección dinámica de ubicación (fuera del form)
+st.subheader("Por favor, seleccione su provincia, cantón y distrit.")
+
+provincias = df_ubicaciones['Provincia'].unique()
+provincia = st.selectbox("Provincia", options=[""] + list(provincias), key="provincia")
+
+if provincia:
+    cantones = df_ubicaciones[df_ubicaciones['Provincia'] == provincia]['Cantón'].unique()
+else:
+    cantones = []
+canton = st.selectbox("Cantón", options=[""] + list(cantones), key="canton")
+
+if canton:
+    distritos = df_ubicaciones[(df_ubicaciones['Provincia'] == provincia) & (df_ubicaciones['Cantón'] == canton)]['Distrito'].unique()
+else:
+    distritos = []
+distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrito")
+
+
 # Campos del formulario (igual)
 with st.form(key="evaluacionfinal"):
     #Contenido del formulario
@@ -155,9 +174,9 @@ with st.form(key="evaluacionfinal"):
                             "calificacion":calificacion, 
                             "interes_cursos": interes_cursos,
                             "interes_otros_cursos":otro_curso,
-                            "provincia":provincia,
-                            "canton":canton,
-                            "distrito":distrito,
+                            "provincia": st.session_state.provincia,
+                            "canton": st.session_state.canton,
+                            "distrito": st.session_state.distrito,
                             'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
                         }
                     ]
