@@ -108,4 +108,26 @@ with st.form(key="evaluacionfinal"):
     submit_button = st.form_submit_button(label="Enviar mi evaluación final del curso")
 
     #Revisar envío
+    if st.button("Enviar"):
+# Validaciones
+        if not nombre.strip():
+        st.warning("Por favor ingresa tu nombre completo.")
+        elif not validar_correo(correo):
+        st.warning("Por favor ingresa un correo válido.")
+        elif not provincia or not canton or not distrito:
+        st.warning("Por favor selecciona provincia, cantón y distrito.")
+        elif not grupo:
+        st.warning("Por favor selecciona el grupo.")
+        elif asististe == "Seleccione...":
+        st.warning("Por favor indica si asististe a las cuatro clases.")
+        elif not motivo_ausencia:
+        st.warning("Por favor selecciona el motivo de ausencia.")
+        elif not clase_favorita.strip():
+        st.warning("Por favor escribe cuál fue tu clase favorita.")
+        elif not clase_menos_gusto.strip():
+        st.warning("Por favor escribe cuál fue la clase que menos te gustó.")
+        elif not recomendaciones.strip():
+        st.warning("Por favor escribe tus recomendaciones.")
+        elif not experiencia.strip():
+        st.warning("Por favor escribe tu experiencia general del curso.")
     
