@@ -146,10 +146,12 @@ if st.button("Enviar formulario"):
                     }
                 ]
             )
-            conn = st.connection("gsheets", type=GSheetsConnection) 
-            evaluacion_final=conn.update(worksheet="prueba2", data=evaluacion_final,)
+            conn = st.connection("gsheets", type=GSheetsConnection) 7
+            existing_data = conn.read(worksheet="prueba2")
+            agregar_df=pd.concat([existing_data, evaluacion_final], ignore_index=True)
+            conn.update(worksheet="prueba2", data=agregar_df)
             st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
-            st.cache_data.clear()
+
 
 
 
