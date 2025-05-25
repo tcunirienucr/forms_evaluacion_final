@@ -99,64 +99,58 @@ else:
     distritos = []
 distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrito")
 
-# Campos del formulario (igual)
-with st.form(key="evaluacionfinal"):
-
-    #Botón para enviar
-    submit_button = st.form_submit_button(label="Enviar mi evaluación final del curso")
-
-    #Revisar envío
-    if submit_button:
+#Revisar envío
+if st.button("Enviar formulario"):
 # Validaciones
-        if not nombre.strip():
-            st.warning("Por favor ingresa tu nombre completo.")
-        elif not validar_correo(correo):
-            st.warning("Por favor ingresa un correo válido.")
-        elif not provincia or not canton or not distrito:
-            st.warning("Por favor selecciona provincia, cantón y distrito.")
-        elif not grupo:
-            st.warning("Por favor selecciona el grupo.")
-        elif asististe == "Seleccione...":
-            st.warning("Por favor indica si asististe a las cuatro clases.")
-        elif not motivo_ausencia:
-            st.warning("Por favor selecciona el motivo de ausencia.")
-        elif not clase_favorita.strip():
-            st.warning("Por favor escribe cuál fue tu clase favorita.")
-        elif not clase_menos_gusto.strip():
-            st.warning("Por favor escribe cuál fue la clase que menos te gustó.")
-        elif not recomendaciones.strip():
-            st.warning("Por favor escribe tus recomendaciones.")
-        elif not experiencia.strip():
-            st.warning("Por favor escribe tu experiencia general del curso.")
-        else:
-                evaluacion_final = pd.DataFrame(
-                    [
-                        {
-                                                        "nombre": nombre,
-                            "edad":st.session_state.edad,
-                            "correo":st.session_state.correo,
-                            "grupo":st.session_state.grupo,
-                            "asistencia": st.session_state.asististe,
-                            "motivo_ausencia": st.session_state.motivo_ausencia,
-                            "clase_favorita":st.session_state.clase_favorita,
-                            "clase_menos_favorita":st.session_state.clase_menos_gusto,
-                            "recomendaciones":st.session_state.recomendaciones,
-                            "experiencia":st.session_state.experiencia,
-                            "calificacion":st.session_state.calificacion, 
-                            "interes_cursos": st.session_state.interes_cursos,
-                            "interes_otros_cursos":st.session_state.otro_curso,
-                            "canton":st.session_state.canton,
-                            "distrito":st.session_state.distrito,
-                            'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-                            "provincia": st.session_state.provincia
-                        }
-                    ]
-                )
-                conn = st.connection("gsheets", type=GSheetsConnection) 
-                evaluacion_final=conn.update(worksheet="prueba2", data=evaluacion_final,)
-                st.cache_data.clear()
-                st.rerun()
-                st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
+    if not nombre.strip():
+        st.warning("Por favor ingresa tu nombre completo.")
+    elif not validar_correo(correo):
+        st.warning("Por favor ingresa un correo válido.")
+    elif not provincia or not canton or not distrito:
+        st.warning("Por favor selecciona provincia, cantón y distrito.")
+    elif not grupo:
+        st.warning("Por favor selecciona el grupo.")
+    elif asististe == "Seleccione...":
+        st.warning("Por favor indica si asististe a las cuatro clases.")
+    elif not motivo_ausencia:
+        st.warning("Por favor selecciona el motivo de ausencia.")
+    elif not clase_favorita.strip():
+        st.warning("Por favor escribe cuál fue tu clase favorita.")
+    elif not clase_menos_gusto.strip():
+        st.warning("Por favor escribe cuál fue la clase que menos te gustó.")
+    elif not recomendaciones.strip():
+        st.warning("Por favor escribe tus recomendaciones.")
+    elif not experiencia.strip():
+        st.warning("Por favor escribe tu experiencia general del curso.")
+    else:
+            evaluacion_final = pd.DataFrame(
+                [
+                    {
+                                                    "nombre": nombre,
+                        "edad":st.session_state.edad,
+                        "correo":st.session_state.correo,
+                        "grupo":st.session_state.grupo,
+                        "asistencia": st.session_state.asististe,
+                        "motivo_ausencia": st.session_state.motivo_ausencia,
+                        "clase_favorita":st.session_state.clase_favorita,
+                        "clase_menos_favorita":st.session_state.clase_menos_gusto,
+                        "recomendaciones":st.session_state.recomendaciones,
+                        "experiencia":st.session_state.experiencia,
+                        "calificacion":st.session_state.calificacion, 
+                        "interes_cursos": st.session_state.interes_cursos,
+                        "interes_otros_cursos":st.session_state.otro_curso,
+                        "canton":st.session_state.canton,
+                        "distrito":st.session_state.distrito,
+                        'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+                        "provincia": st.session_state.provincia
+                    }
+                ]
+            )
+            conn = st.connection("gsheets", type=GSheetsConnection) 
+            evaluacion_final=conn.update(worksheet="prueba2", data=evaluacion_final,)
+            st.cache_data.clear()
+            st.rerun()
+            st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
 
 
     
