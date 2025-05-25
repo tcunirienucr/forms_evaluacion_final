@@ -116,15 +116,15 @@ provincia = st.selectbox("Provincia", options=[""] + list(provincias), key="prov
 
 # Select cantón según provincia
 if provincia:
-cantones = df_ubicaciones[df_ubicaciones['Provincia'] == provincia]['Cantón'].unique()
+    cantones = df_ubicaciones[df_ubicaciones['Provincia'] == provincia]['Cantón'].unique()
 else:
-cantones = []
-canton = st.selectbox("Cantón", options=[""] + list(cantones), key="canton")
+    cantones = []
+    canton = st.selectbox("Cantón", options=[""] + list(cantones), key="canton")
 
 # Select distrito según cantón
 if canton:
-distritos = df_ubicaciones[(df_ubicaciones['Provincia'] == provincia) & (df_ubicaciones['Cantón'] == canton)]['Distrito'].unique()
+    distritos = df_ubicaciones[(df_ubicaciones['Provincia'] == provincia) & (df_ubicaciones['Cantón'] == canton)]['Distrito'].unique()
 else:
-distritos = []
-distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrito")
-
+    distritos = []
+    distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrito")
+    
