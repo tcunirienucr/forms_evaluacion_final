@@ -160,4 +160,10 @@ with st.form(key="evaluacionfinal"):
                 updated_df = pd.concat([df, evaluacion_final], ignore_index=True)
                 conn.update(worksheet="excel_intermedio", data=updated_df)
                 st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias")
+
+                # Restablecer valores del formulario
+                for key in ["nombre", "edad", "correo", "grupo", "asististe", "motivo_ausencia", 
+                            "clase_favorita", "clase_menos_gusto", "recomendaciones", "experiencia", 
+                            "calificacion", "interes_cursos", "otro_curso", "provincia", "canton", "distrito"]:
+                    st.session_state[key] = ""
     
