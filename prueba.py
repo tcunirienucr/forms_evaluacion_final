@@ -39,7 +39,7 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 #Establecer la conexión con Google Sheets 
 conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(worksheet="excelintermedio")
-
+nombre = st.text_input("Nombre completo", key="nombre")
 # Campos del formulario (igual)
 with st.form(key="evaluacionfinal"):
     #Contenido del formulario
