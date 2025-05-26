@@ -4,4 +4,4 @@ gspread
 google-auth
 openpyxl
 st-gsheets-connection
-
+oauth2client
