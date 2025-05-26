@@ -2,32 +2,14 @@
 
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
+import streamlit as st
 import pandas as pd
 import os
 import re
 from datetime import datetime
-import json
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-#Conectar a la hoja de Google.
 
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-
-# Obtener el string JSON del secreto
-json_creds = st.secrets["connections"]["gsheets"]
-
-# Convertir el string JSON a diccionario Python
-creds_dict = json.loads(json_creds)
-
-# Crear credenciales
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-
-# Autorizar cliente gspread
-client = gspread.authorize(creds)
-
-# Abrir hoja y worksheet
-sh = client.open("Formularios de evaluación final").worksheet("prueba2")
-
+st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
+st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
 #Función para validar correo
 def validar_correo(correo):
     return re.match(r"[^@]+@[^@]+\.[^@]+", correo)
@@ -47,12 +29,9 @@ if not os.path.exists(archivo_ubicaciones):
 
 df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
-#Contenido del formulario
-st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
-st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
-
-st.write("Datos actuales en la hoja:")
-st.write(df)
+#Leer Google Sheets
+conn = st.connection("gsheets", type=GSheetsConnection) 
+df = conn.read(worksheet="prueba2", usecols=list(range(18)), ttl=5) # Ajusta usecols y ttl según tus necesidades
 
 #Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
@@ -148,8 +127,33 @@ if st.button("Enviar formulario"):
     elif not experiencia.strip():
         st.warning("Por favor escribe tu experiencia general del curso.")
     else:
-        nueva_fila=[nombre, edad, correo, grupo, asististe, motivo_ausencia, clase_favorita, clase_menos_gusto, recomendaciones, experiencia, calificacion, interes_cursos, otro_curso, provincia, canton, distrito]
-        sh.append_row(nueva_fila)
+            evaluacion_final = pd.DataFrame(
+                [
+                    {
+                                                    "nombre": nombre,
+                        "edad":st.session_state.edad,
+                        "correo":st.session_state.correo,
+                        "grupo":st.session_state.grupo,
+                        "asistencia": st.session_state.asististe,
+                        "motivo_ausencia": st.session_state.motivo_ausencia,
+                        "clase_favorita":st.session_state.clase_favorita,
+                        "clase_menos_favorita":st.session_state.clase_menos_gusto,
+                        "recomendaciones":st.session_state.recomendaciones,
+                        "experiencia":st.session_state.experiencia,
+                        "calificacion":st.session_state.calificacion, 
+                        "interes_cursos": st.session_state.interes_cursos,
+                        "interes_otros_cursos":st.session_state.otro_curso,
+                        "canton":st.session_state.canton,
+                        "distrito":st.session_state.distrito,
+                        'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+                        "provincia": st.session_state.provincia
+                    }
+                ]
+            )
+            agregar_df=pd.concat([existing_data, evaluacion_final], ignore_index=True)
+            conn.update(worksheet="prueba2", data=agregar_df)
+            st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
+
 
 
 
