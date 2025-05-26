@@ -12,11 +12,14 @@ from oauth2client.service_account import ServiceAccountCredentials
 #Conectar a la hoja de Google.
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-json_creds = st.secrets["connections.gsheets"]  # Aquí en secrets.toml
-creds_dict = json.loads(json_creds)
+
+json_creds = st.secrets["connections"]["gsheets"]
+creds_dict = json.loads(json_creds)  # convertir string JSON a dict
+
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
-sh = client.open('Formularios de evaluación final').worksheet('prueba2')  
+
+sh = client.open('Formularios de evaluación final').worksheet('prueba2')
 
 #Función para validar correo
 def validar_correo(correo):
