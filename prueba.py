@@ -8,6 +8,22 @@ import os
 import re
 from datetime import datetime
 
+import json
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import streamlit as st
+
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
+json_creds = st.secrets["gcp_service_account"]  # Aquí en secrets.toml
+
+creds_dict = json.loads(json_creds)
+
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client = gspread.authorize(creds)
+
+
+
 st.title("📋 Formulario de Evaluación Final del Curso: Excel Intermedio")
 st.subheader("Le agradecemos que complete el siguiente formulario con honestidad y claridad. Sus aportes serán sumamente útiles para el enriquecimiento de nuestros cursos")
 #Función para validar correo
