@@ -33,7 +33,7 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 conn = st.connection("gsheets", type=GSheetsConnection) 
 existing_data = conn.read(worksheet="prueba2")
 st.write(existing_data)
-
+st.write(existing_data.columns)
 #Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
 edad = st.number_input("Edad", 0, 120, key="edad")
