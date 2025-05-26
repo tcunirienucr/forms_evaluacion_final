@@ -31,7 +31,7 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
 #Leer Google Sheets
 conn = st.connection("gsheets", type=GSheetsConnection) 
-existing_data = conn.read(worksheet="prueba2")
+df = conn.read(worksheet="prueba2", usecols=list(range(18)), ttl=5) # Ajusta usecols y ttl según tus necesidades
 
 #Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
