@@ -30,7 +30,7 @@ if not os.path.exists(archivo_ubicaciones):
 df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
 #Leer Google Sheets
-conn = st.connection("gsheets", type=GSheetsConnection) 
+conn = st.connection("gsheet", type=GSheetsConnection) 
 df = conn.read(worksheet="prueba2", usecols=list(range(18)), ttl=5) # Ajusta usecols y ttl según tus necesidades
 
 #Contenido del formulario
