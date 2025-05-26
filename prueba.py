@@ -31,7 +31,7 @@ df_ubicaciones = cargar_ubicaciones(archivo_ubicaciones)
 
 #Leer Google Sheets
 conn = st.connection("gsheet", type=GSheetsConnection) 
-df = conn.read(worksheet="prueba2", usecols=list(range(18)), ttl=5) # Ajusta usecols y ttl según tus necesidades
+df = conn.read(worksheet="excelintermedioi2025", usecols=list(range(18)), ttl=5) # Ajusta usecols y ttl según tus necesidades
 
 #Contenido del formulario
 nombre = st.text_input("Nombre completo", key="nombre")
@@ -151,7 +151,7 @@ if st.button("Enviar formulario"):
                 ]
             )
             agregar_df=pd.concat([df, evaluacion_final], ignore_index=True)
-            conn.update(worksheet="prueba2", data=agregar_df)
+            conn.update(worksheet="excelintermedioi2025", data=agregar_df)
             st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
 
 
