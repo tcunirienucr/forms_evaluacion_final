@@ -105,6 +105,7 @@ distrito = st.selectbox("Distrito", options=[""] + list(distritos), key="distrit
 
 #Revisar envío
 if st.button("Enviar formulario"):
+    st.write(existing_data)
 # Validaciones
     if not nombre.strip():
         st.warning("Por favor ingresa tu nombre completo.")
