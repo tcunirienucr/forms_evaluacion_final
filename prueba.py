@@ -141,7 +141,7 @@ if st.button("Enviar formulario"):
     elif not experiencia.strip():
         st.warning("Por favor escribe tu experiencia general del curso.")
     else:
-        nueva_fila=[nombre, edad, correo, grupo, asististe, motivo_ausencia, clase_favorita, clase_menos_gusto, recomendaciones, experiencia, calificacion, interes_cursos, otro_curso, provincia, canton, distrito[
+        nueva_fila=[nombre, edad, correo, grupo, asististe, motivo_ausencia, clase_favorita, clase_menos_gusto, recomendaciones, experiencia, calificacion, interes_cursos, otro_curso, provincia, canton, distrito]
         sh.append_row(nueva_fila)
 
 
