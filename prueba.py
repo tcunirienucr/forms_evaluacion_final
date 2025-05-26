@@ -150,7 +150,7 @@ if st.button("Enviar formulario"):
                     }
                 ]
             )
-            agregar_df=pd.concat([existing_data, evaluacion_final], ignore_index=True)
+            agregar_df=pd.concat([df, evaluacion_final], ignore_index=True)
             conn.update(worksheet="prueba2", data=agregar_df)
             st.success("¡Su evaluación final del curso ha sido correctamente enviada! Muchas gracias (Por favor, no lo envíe nuevamente con los mismos valores). ")
 
